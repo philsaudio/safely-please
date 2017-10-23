@@ -103,8 +103,9 @@ void setup(){
 void moveOnemeter(){ //the function is called 'moveOnemeter'
  stopMotor(false);
  moveForward();
- delay(1000);  //this is the time the car will move forward for, you need to calculate this.
- Serial.println("ONE");
+ delay(4500);           //this is the time the car will move forward for, 
+                        //you need to calculate this.
+ Serial.println("ONE"); //use this to ensure that the ultrasonic sensor is activated
 }
 
 
@@ -135,8 +136,8 @@ void loop(){
     stopMotor(true);
   }
 
-//  If we just place moveOnemeter() only, then it'll make keep forward, because loop(). 
-//  That's why we need to add stopMotor & delay
+//  If we just place moveOnemeter() only, then it'll make keep forward, 
+//  because loop(). That's why we need to add stopMotor & delay
 //  moveOnemeter();
 //  stopMotor(true);
 //  delay(100000000);  
