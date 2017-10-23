@@ -1,15 +1,20 @@
-int IN1=2;
-int IN2=3;
-int IN3=4;
-int IN4=7;
-int ENA=5;
-int ENB=6;
+These are the global variables.
 
-int trig = 9;
+int IN1=2;  //Input to control Motor A
+int IN2=3;  //Input to control Motor A
+int IN3=4;  //Input to control Motor B
+int IN4=7;  //Input to control Motor B
+int ENA=5;  //Input to enable Motor A
+int ENB=6;  //Input to enable Motor B
+
+int trig = 9;  //This group is the input for the ultrasonic sensor.
 int echo = 8;
 int inter_time = 1000;
 float duration, distance;
 
+//Below are a series of call-by functions to move the car forward, backward, turn left and turn right.
+
+//The following code block is to stop the motor.  This is to reset the motor so that it works each time we command a new function.
 void stopMotor(boolean r){
   if (r){ 
     analogWrite(ENA,0);
@@ -21,13 +26,17 @@ void stopMotor(boolean r){
   }
 }
 
+//This code block means the car will move backwards for 1000ms (or 1 second)
+
 void moveBackward(){
-  digitalWrite(IN3,HIGH);
-  digitalWrite(IN4,LOW);
+  digitalWrite(IN3,HIGH);  //HIGH means that input is on.
+  digitalWrite(IN4,LOW);   //LOW means that input is off.
   digitalWrite(IN1,HIGH);
   digitalWrite(IN2,LOW);
   delay(1000);    
   }
+
+//This code block means the car will move forwards for 1000ms (or 1 second)
 
 void moveFoward(){
   digitalWrite(IN3,LOW);  
@@ -35,26 +44,26 @@ void moveFoward(){
   digitalWrite(IN1,LOW);
   digitalWrite(IN2,HIGH);
   delay(1000);
-  
   }
-void trunRight(){
+
+//This will turn the car right.
+
+void turnRight(){
   digitalWrite(IN1,HIGH);  
   digitalWrite(IN2,LOW); 
   digitalWrite(IN3,LOW);
   digitalWrite(IN4,HIGH);
   delay(1000);
-    
-  
   }
+
+//this will turn the car left.
 
 void turnLeft(){
   digitalWrite(IN3,HIGH);  
   digitalWrite(IN4,LOW); 
   digitalWrite(IN1,LOW);
   digitalWrite(IN2,HIGH);
-
   delay(1000);
-
   }
 
 //Ultrasonic Sensor
@@ -62,8 +71,8 @@ int Distance(){
   digitalWrite(trig, HIGH);
 //  delayMicroseconds(10000);
   digitalWrite(trig, LOW);
-  duration = pulseIn (echo, HIGH);
-  distance = (duration/2)/29; 
+  duration = pulseIn (echo, HIGH); //Ultrasonic function to detect the echo from sending the sound out and reciving the echo back in. Like a dolphin or submarine.
+  distance = (duration/2)/29; //the following is used to turn the data into distances.
   Serial.print("d = ");
   Serial.print(distance);
   Serial.println(" cm");
@@ -71,33 +80,33 @@ int Distance(){
   return distance;
   }
 
+//The call-by function below is used to keep the car turning if it continues
+//to detect an obstacle within 50cm of the ultrasonic sensor
 void detect(){
-//  myservo.write(35);
-  delay(100);
-  if(Distance()>50){
-    Serial.println("RIGHT");
-    trunRight();    
-//    myservo.write(85);
-    }
-  else if(Distance()<50){
-//    myservo.write(135);
-    delay(100);
-      if(Distance()>50){
-        Serial.println("LEFT");
-        turnLeft(); 
-//        myservo.write(85);
-      }
-      else{
-        moveBackward();
-//        myservo.write(85);
-        }
-    }
-  
 
-  }
+//if the distance is greater than 50cm it is clear to move forward.
+ delay(100);
+ if(Distance()>50){
+   Serial.println("RIGHT");
+   turnnRight();    
+   }
+ //if it is less than 50cm it turns again to avoid that obstacle.
+ else if(Distance()<50){
+   delay(100);
+     if(Distance()>50){
+       Serial.println("LEFT");
+       turnLeft(); 
+     }
+     else{
+       moveBackward();
+       }
+   }
+ 
 
+ }
+
+//This block is used to setup the arduino so that it knows which pins do what function.
 void setup(){
-//  myservo.attach(10);
   
   pinMode(ENA,OUTPUT);
   pinMode(ENB,OUTPUT);
@@ -114,10 +123,21 @@ void setup(){
   digitalWrite(ENB, HIGH);
 }
 
+//How to write a call-by function for moving forward a certain distance.
+
+void moveOnemeter(){ //the function is called 'moveOnemeter'
+ stopMotor(false);
+ moveFoward();
+ delay(1000);  //this is the time the car will move forward for, you need to calculate this.
+ 
+ }
+
 
 void loop(){
   
-  //Ultrasonic
+  //Ultrasonic sensor - If the distance is more than 40cm the stopMotor 
+  //function is not triggered and we then use the call-by function to move
+  //the car foward.
   if(Distance()>=40){
     stopMotor(false);
     moveFoward();      
@@ -141,4 +161,6 @@ void loop(){
   }
 
 }
+
+
 
