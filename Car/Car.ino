@@ -1,4 +1,4 @@
-These are the global variables.
+//These are the global variables.
 
 int IN1=2;  //Input to control Motor A
 int IN2=3;  //Input to control Motor A
@@ -38,7 +38,7 @@ void moveBackward(){
 
 //This code block means the car will move forwards for 1000ms (or 1 second)
 
-void moveFoward(){
+void moveForward(){
   digitalWrite(IN3,LOW);  
   digitalWrite(IN4,HIGH); 
   digitalWrite(IN1,LOW);
@@ -88,7 +88,7 @@ void detect(){
  delay(100);
  if(Distance()>50){
    Serial.println("RIGHT");
-   turnnRight();    
+   turnRight();    
    }
  //if it is less than 50cm it turns again to avoid that obstacle.
  else if(Distance()<50){
@@ -127,7 +127,7 @@ void setup(){
 
 void moveOnemeter(){ //the function is called 'moveOnemeter'
  stopMotor(false);
- moveFoward();
+ moveForward();
  delay(1000);  //this is the time the car will move forward for, you need to calculate this.
  
  }
@@ -140,7 +140,7 @@ void loop(){
   //the car foward.
   if(Distance()>=40){
     stopMotor(false);
-    moveFoward();      
+    moveForward();      
     }
   else if(Distance()<50){
     Serial.println("STOP");
