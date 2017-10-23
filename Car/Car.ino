@@ -69,7 +69,6 @@ void turnLeft(){
 //Ultrasonic Sensor
 int Distance(){
   digitalWrite(trig, HIGH);
-//  delayMicroseconds(10000);
   digitalWrite(trig, LOW);
   duration = pulseIn (echo, HIGH); //Ultrasonic function to detect the echo from sending the sound out and reciving the echo back in. Like a dolphin or submarine.
   distance = (duration/2)/29; //the following is used to turn the data into distances.
@@ -80,30 +79,6 @@ int Distance(){
   return distance;
   }
 
-//The call-by function below is used to keep the car turning if it continues
-//to detect an obstacle within 50cm of the ultrasonic sensor
-void detect(){
-
-//if the distance is greater than 50cm it is clear to move forward.
- delay(100);
- if(Distance()>50){
-   Serial.println("RIGHT");
-   turnRight();    
-   }
- //if it is less than 50cm it turns again to avoid that obstacle.
- else if(Distance()<50){
-   delay(100);
-     if(Distance()>50){
-       Serial.println("LEFT");
-       turnLeft(); 
-     }
-     else{
-       moveBackward();
-       }
-   }
- 
-
- }
 
 //This block is used to setup the arduino so that it knows which pins do what function.
 void setup(){
@@ -129,8 +104,8 @@ void moveOnemeter(){ //the function is called 'moveOnemeter'
  stopMotor(false);
  moveForward();
  delay(1000);  //this is the time the car will move forward for, you need to calculate this.
- 
- }
+ Serial.println("ONE");
+}
 
 
 void loop(){
@@ -153,12 +128,18 @@ void loop(){
     delay(20);
     stopMotor(true);
 
-    Serial.println("DETECT");
     stopMotor(false);
-    detect();
+    Serial.println("RIGHT");
+    turnRight();
     delay(20);
     stopMotor(true);
   }
+
+//  If we just place moveOnemeter() only, then it'll make keep forward, because loop(). 
+//  That's why we need to add stopMotor & delay
+//  moveOnemeter();
+//  stopMotor(true);
+//  delay(100000000);  
 
 }
 
