@@ -1,4 +1,4 @@
-//These are the global variables.
+//These are the global variables. You must have these!!
 
 int IN1=2;  //Input to control Motor A
 int IN2=3;  //Input to control Motor A
@@ -138,11 +138,12 @@ void loop(){
 
 //  If we just place moveOnemeter() only, then it'll make keep forward, 
 //  because loop(). That's why we need to add stopMotor & delay
+//  void loop(){
 //  moveOnemeter();
 //  stopMotor(true);
 //  delay(100000000);  
 
-}
+//}
 
 
 
